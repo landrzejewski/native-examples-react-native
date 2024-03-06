@@ -2,6 +2,12 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:RTCTrainingModule.h">
+   </FileRef>
+   <FileRef
+      location = "group:/Users/lukasz/Desktop/NativeExamples/ios/RTCTrainingModule.m">
+   </FileRef>
+   <FileRef
       location = "group:NativeExamples.xcodeproj">
    </FileRef>
    <FileRef

@@ -1,6 +1,6 @@
-import {Image, Pressable, StyleSheet} from 'react-native';
-import {useState} from 'react';
-import { launchCamera, launchImageLibrary } from "react-native-image-picker";
+import { Image, Pressable, StyleSheet } from "react-native";
+import { useState } from "react";
+import { launchCamera } from "react-native-image-picker";
 
 const Avatar = () => {
   const [imageUrl, setImageUrl] = useState();

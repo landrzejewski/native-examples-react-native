@@ -1,8 +1,10 @@
-import React from 'react';
-import { StyleSheet, Text, View } from "react-native";
+import React, {useEffect, useState} from 'react';
+import {NativeModules, StyleSheet, Text, View} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {openDatabase} from 'react-native-sqlite-storage';
 import Avatar from './Avatar';
+
+const {TrainingModule} = NativeModules;
 
 const App = () => {
   (async () => {
@@ -46,9 +48,17 @@ const App = () => {
     );
   })();
 
+  const [currentDate, setCurrentDate] = useState('');
+
+  useEffect(() => {
+    setCurrentDate(TrainingModule.getDate('dd-MM-yy'));
+    //TrainingModule.getDateAsync('dd-MM-yy', setCurrentDate);
+  }, []);
+
   return (
     <View style={styles.container}>
       <Avatar />
+      <Text>{currentDate}</Text>
     </View>
   );
 };
