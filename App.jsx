@@ -1,11 +1,22 @@
 import React, {useEffect, useState} from 'react';
-import { NativeModules, SafeAreaView, StyleSheet, Text, View } from "react-native";
+import {
+  Button,
+  NativeModules,
+  SafeAreaView,
+  StyleSheet,
+  View,
+} from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {openDatabase} from 'react-native-sqlite-storage';
-import Avatar from './Avatar';
-import WebView from 'react-native-webview';
 import parseQueryParameters from 'parse-url-query-params';
-import InAppBrowser from "react-native-inappbrowser-reborn";
+import Animated, {
+  Easing,
+  ReduceMotion,
+  useSharedValue,
+  withDelay, withRepeat,
+  withSpring,
+  withTiming,
+} from "react-native-reanimated";
 
 const {TrainingModule} = NativeModules;
 
@@ -70,16 +81,38 @@ const App = () => {
     console.log(params);
   };
 
+  // Animations
+
+  const width = useSharedValue(100);
+
+  const handlePress = () => {
+    // width.value = width.value + 50;
+    /*width.value = withTiming(width.value + 50, {
+      duration: 500,
+      easing: Easing.inOut(Easing.back(2.4)),
+      //reduceMotion: ReduceMotion.System,
+    });*/
+    width.value = withRepeat(withSpring(width.value + 50), 3);
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.container}>
-        <Avatar />
-        <Text>{currentDate}</Text>
+        {/*<Avatar />
+        <Text>{currentDate}</Text>*/}
         {/*<WebView
           style={styles.webview}
           source={{uri: 'https://google.com?test=abc'}}
           onNavigationStateChange={onNavigationStateChange}
         />*/}
+        <Animated.View
+          style={{
+            width,
+            height: 100,
+            backgroundColor: 'violet',
+          }}
+        />
+        <Button onPress={handlePress} title="Click me" />
       </View>
     </SafeAreaView>
   );
