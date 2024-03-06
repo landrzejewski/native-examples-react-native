@@ -1,8 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import {NativeModules, StyleSheet, Text, View} from 'react-native';
+import { NativeModules, SafeAreaView, StyleSheet, Text, View } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {openDatabase} from 'react-native-sqlite-storage';
 import Avatar from './Avatar';
+import WebView from 'react-native-webview';
+import parseQueryParameters from 'parse-url-query-params';
+import InAppBrowser from "react-native-inappbrowser-reborn";
 
 const {TrainingModule} = NativeModules;
 
@@ -14,6 +17,7 @@ const App = () => {
       lastName: 'Kowalski',
       age: 32,
     };
+
     // AsyncStore
     const userKey = 'user';
     await AsyncStorage.setItem(userKey, JSON.stringify(user));
@@ -53,13 +57,31 @@ const App = () => {
   useEffect(() => {
     setCurrentDate(TrainingModule.getDate('dd-MM-yy'));
     //TrainingModule.getDateAsync('dd-MM-yy', setCurrentDate);
+
+    /*InAppBrowser.openAuth('provider', 'redirectUri').then(result => {
+      console.log(result);
+    });*/
+    //InAppBrowser.open('https://google.com');
   }, []);
 
+  const onNavigationStateChange = navigationState => {
+    console.log(navigationState);
+    const params = parseQueryParameters(navigationState.url);
+    console.log(params);
+  };
+
   return (
-    <View style={styles.container}>
-      <Avatar />
-      <Text>{currentDate}</Text>
-    </View>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.container}>
+        <Avatar />
+        <Text>{currentDate}</Text>
+        {/*<WebView
+          style={styles.webview}
+          source={{uri: 'https://google.com?test=abc'}}
+          onNavigationStateChange={onNavigationStateChange}
+        />*/}
+      </View>
+    </SafeAreaView>
   );
 };
 const styles = StyleSheet.create({
@@ -67,6 +89,10 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  webview: {
+    width: '100%',
+    height: '100%',
   },
 });
 
